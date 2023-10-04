@@ -1,2 +1,2 @@
 #!/bin/bash
-cat input.txt | paste -d '\n' - - | cut -f1
+grep -n '' input.txt | grep -E '^[0-9]*[02468]:' | cut -d ':' -f 2
