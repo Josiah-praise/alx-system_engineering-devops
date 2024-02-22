@@ -9,7 +9,7 @@ do
     minute=1
     while [ $minute -le 59 ]
     do
-        sleep 0
+        sleep 60
         echo "$minute"
         ((minute++))
     done
