@@ -2,8 +2,10 @@
 # Display Best School 10 times
 
 var="Best School"
+count=10
 
-for ((i=0; i<10; i++));
+until [ $count -eq 0 ];
 do
     echo "$var"
+    ((count--))
 done
