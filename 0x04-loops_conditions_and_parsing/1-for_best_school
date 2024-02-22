@@ -5,5 +5,5 @@ var="Best School"
 
 for ((i=0; i<10; i++));
 do
-    echo $var
+    echo "$var"
 done
