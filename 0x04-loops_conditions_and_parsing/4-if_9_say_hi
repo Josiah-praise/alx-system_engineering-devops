@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Display Best School 10 times
+
+var="Best School"
+count=1
+
+while [ $count -le 10 ];
+do
+    echo "$var"
+    if [ $count -eq 9 ];
+    then
+        echo "Hi"
+    fi
+    ((count++))
+done
