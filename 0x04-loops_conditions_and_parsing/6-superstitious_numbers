@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Superstitious numbers 
+
+four="bad luck from China"
+nine="bad luck from Japan"
+seventeen="bad luck from Italy"
+count=1
+
+while [ $count -le 20 ];
+do
+    case $count in
+        4)
+            echo -e "$count\n$four"
+            ;;
+        9)
+            echo -e "$count\n$nine"
+            ;;
+        17)
+            echo -e "$count\n$seventeen"
+            ;;
+        *)
+            echo "$count"
+            ;;
+    esac
+    ((count++))
+done
