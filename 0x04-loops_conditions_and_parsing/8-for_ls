@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# For ls
+
+for each in $(ls)
+do
+    if [ -f $each ]
+    then
+        echo "${each/*-/}"
+    fi
+done
