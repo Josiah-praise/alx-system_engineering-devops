@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # For ls
 
-for each in $(ls)
+for each in *
 do
-    if [ -f $each ]
+    if [ -f "$each" ]
     then
         echo "${each/*-/}"
     fi
