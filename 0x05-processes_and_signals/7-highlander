@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# use trap to handle a SIGTERM
+
+
+while true
+do
+    trap "echo I am invincible!!!" SIGTERM
+    echo "To infinity and beyond"
+    sleep 2
+done
