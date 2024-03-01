@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# pings the ip passed as an argument
+
+if [ "$#" -gt 0 ]
+then
+    ping -c 5 "$1"
+fi
