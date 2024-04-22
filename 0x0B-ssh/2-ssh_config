@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# this script sets up my ssh config file
+Host my_server
+    PasswordAuthentication no
+    IdentityFile ~/.ssh/school
