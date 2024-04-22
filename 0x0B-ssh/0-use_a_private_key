@@ -3,4 +3,4 @@
 # using the private key ~/.ssh/school with 
 # the user ubuntu
 
-ssh -o "IdentityFile=~/.ssh/school" ubuntu@18.234.129.162
+ssh -i ~/.ssh/school ubuntu@18.234.129.162
