@@ -3,8 +3,12 @@
 # install nginx server
 # curl ip/ should return Hello World!
 
-# become root user
-sudo su
+if [[ $EUID -ne 0 ]]
+then
+    echo 'Must be root user'
+    exit 1
+fi 
+
 
 # update your repo and then upgrade
 apt update -y && apt -y upgrade
@@ -13,4 +17,4 @@ apt update -y && apt -y upgrade
 apt install nginx
 
 # create an index.html file in /var/www/html
-echo Hello World! > /var/www/html/index.html
+echo "Hello World!" > /var/www/html/index.html
