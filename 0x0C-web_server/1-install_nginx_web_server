@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# install nginx server
+# curl ip/ should return Hello World!
+
+# become root user
+sudo su
+
+# update your repo and then upgrade
+apt update -y && apt -y upgrade
+
+# install nginx 
+apt install nginx
+
+# create an index.html file in /var/www/html
+echo Hello World! > /var/www/html/index.html
