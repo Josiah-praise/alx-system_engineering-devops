@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # install nginx server
 # curl ip/ should return Hello World!
 
