@@ -10,10 +10,16 @@ fi
 
 
 # update your repo and then upgrade
-if apt-get update -y && apt-get -y upgrade
+if apt-get update && apt-get -y upgrade
 then
     # install nginx
-    apt install nginx
+    if apt install nginx
+    then
+        echo "nginx sucessfully installed"
+    else
+        echo "nginx installation failed" 1>&2
+        exit 1
+    fi
 else
     echo "Update failed" 1>&2
     exit 1
@@ -26,4 +32,6 @@ if ! service nginx restart
 then
     echo "Failed to start Nginx" 1>&2
     exit 1
+else
+    echo "nginx restarted successfully"
 fi
