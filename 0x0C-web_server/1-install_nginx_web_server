@@ -3,9 +3,9 @@
 # install nginx server
 # curl ip/ should return Hello World!
 
-if [[ $EUID -ne 0 ]]
+if [ "$EUID" -ne 0 ]
 then
-    echo 'Must be root user'
+    echo 'Must be root user' 1>&2
     exit 1
 fi 
 
@@ -18,3 +18,5 @@ apt install nginx
 
 # create an index.html file in /var/www/html
 echo "Hello World!" > /var/www/html/index.html
+
+service nginx restart
