@@ -1,37 +1,20 @@
 #!/usr/bin/env bash
+
 # install nginx server
 # curl ip/ should return Hello World!
 
 if [[ $EUID -ne 0 ]]
 then
-    echo 'Must be root user' 1>&2
+    echo 'Must be root user'
     exit 1
 fi 
 
 
 # update your repo and then upgrade
-if apt-get update && apt-get -y upgrade
-then
-    # install nginx
-    if apt install nginx
-    then
-        echo "nginx sucessfully installed"
-    else
-        echo "nginx installation failed" 1>&2
-        exit 1
-    fi
-else
-    echo "Update failed" 1>&2
-    exit 1
-fi
+apt update -y && apt -y upgrade
+
+# install nginx 
+apt install nginx -y
 
 # create an index.html file in /var/www/html
 echo "Hello World!" > /var/www/html/index.html
-
-if ! service nginx restart
-then
-    echo "Failed to start Nginx" 1>&2
-    exit 1
-else
-    echo "nginx restarted successfully"
-fi
