@@ -28,7 +28,13 @@ else
 fi
 
 # appends a rewrite to youtube.com
-sed -i '/root/a\\trewrite ^/redirect_me$ https://youtube.com permanent;'  /etc/nginx/sites-enabled/default
+sed -i '/^root/a\\trewrite ^/redirect_me/?$ https://youtube.com permanent;'  /etc/nginx/sites-enabled/default
 
 # reload configs
-nginx -s reload
+if nginx -s reload
+then
+    echo "reload sucessful"
+else
+    echo "nginx reload failed" 1>&2 
+    exit 1
+fi
