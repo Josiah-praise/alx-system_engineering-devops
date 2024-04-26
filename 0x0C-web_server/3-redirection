@@ -27,6 +27,9 @@ else
     exit 1
 fi
 
+# create index.html
+echo "Hello World!" > /var/www/html/index.html
+
 # appends a rewrite to youtube.com
 sed -i '/^\troot/a\\trewrite ^/redirect_me/?$ https://youtube.com permanent;'  /etc/nginx/sites-enabled/default
 
