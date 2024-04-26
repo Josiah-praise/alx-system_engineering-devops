@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# setup the default 404 error page
+
+if [[ $EUID -ne 0 ]]
+then
+    echo "You must be root" 1>&2
+    exit 1
+fi
+
+# install nginx
+if apt update && apt install -y nginx
+then
+    echo "Nginx installed sucessfully"
+else
+    echo "Nginx installation failed"
+    exit 1
+fi
+
+# create 404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+# configure nginx to serve 404.html for 404 errors
+sed -i '/^\troot/a\\terror_page 404 /404.html;' /etc/nginx/sites-enabled/default
+
+if nginx -s reload
+then
+    echo "Nginx sucessfuly reloaded"
+else
+    echo "Nginx reload failed" 1>&2
+fi
+
