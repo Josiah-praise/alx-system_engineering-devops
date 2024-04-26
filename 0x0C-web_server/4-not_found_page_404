@@ -2,7 +2,8 @@
 # setup the default 404 error page
 
 # install nginx
-apt update && apt install -y nginx
+apt-get update
+apt-get -y install nginx
 
 # create index.html
 echo "Hello World!" > /var/www/html/index.html
