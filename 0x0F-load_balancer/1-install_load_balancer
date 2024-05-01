@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # install and configure haproxy as a load balancer
 
-apt-get update
+apt-get update -y
 apt-get install --no-install-recommends -y software-properties-common
 add-apt-repository ppa:vbernat/haproxy-2.9 -y
 # install haproxy
-apt-get install haproxy=2.9\* -y
+apt-get -y install haproxy
 
 # create a copy of the default haproxy config
 cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.old
