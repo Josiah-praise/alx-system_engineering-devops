@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# setup the default 404 error page
+
+# install nginx
+apt-get update
+apt-get -y install nginx
+
+# create index.html
+echo "Hello World!" > /var/www/html/index.html
+
+# create 404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+# configure nginx to redirect at /redirect_me
+sed -i '/^\troot/a\\trewrite ^/redirect_me/?$ https://youtube.com permanent;' /etc/nginx/sites-enabled/default
+
+# configure nginx to serve 404.html for 404 errors
+sed -i '/^\troot/a\\terror_page 404 /404.html;' /etc/nginx/sites-enabled/default
+
+sed -i "/^\troot/a\\\tadd_header X-Served-By $(hostname);" /etc/nginc/sites-enabled/default
+
+service nginx restart
