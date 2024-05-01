@@ -22,8 +22,8 @@ echo -e "\nfrontend haproxy_server
 backend nginx_servers
 \tmode http
 \tbalance roundrobin
-\tserver s1 18.234.129.162:80 check
-\tserver s2 100.26.120.72:80 check" >> /etc/haproxy/haproxy.cfg
+\tserver 530458-web-01 18.234.129.162:80 check
+\tserver 530458-web-02 100.26.120.72:80 check" >> /etc/haproxy/haproxy.cfg
 
 # restart haproxy
 service haproxy restart
