@@ -17,6 +17,6 @@ sed -i '/^\troot/a\\trewrite ^/redirect_me/?$ https://youtube.com permanent;' /e
 # configure nginx to serve 404.html for 404 errors
 sed -i '/^\troot/a\\terror_page 404 /404.html;' /etc/nginx/sites-enabled/default
 
-sed -i "/^\troot/a\\\tadd_header X-Served-By $(hostname);" /etc/nginc/sites-enabled/default
+sed -i "/^\troot/a\\\tadd_header X-Served-By $(hostname);" /etc/nginx/sites-enabled/default
 
 service nginx restart
