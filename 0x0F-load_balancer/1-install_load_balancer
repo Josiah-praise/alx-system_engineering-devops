@@ -1,26 +1,13 @@
 #!/usr/bin/env bash
 # install and configure HAproxy as a load balancer
 
-if [[ $EUID -ne 0 ]]
-then
-    echo "You must ne root" 1>&2
-    exit 1
-fi
-
-
-
+apt update
 apt-get install --no-install-recommends -y software-properties-common
 # add the haproxy repo to system packages
 add-apt-repository ppa:vbernat/haproxy-2.9 -y
 
 # install haproxy
-if apt-get install haproxy=2.9\* -y
-then
-    echo "==============haproxy 2.9 sucessfully installed============================"
-else
-    echo "haproxy not installed sucessfully" 1>&2
-    exit 1
-fi
+apt-get install haproxy=2.9\* -y
 
 # create a copy of the default haproxy config
 cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.old
@@ -38,11 +25,5 @@ backend nginx_servers
 \tserver s1 18.234.129.162:80 check
 \tserver s2 100.26.120.72:80 check" >> /etc/haproxy/haproxy.cfg
 
-# test and reload the configuration
-if haproxy -c -f /etc/haproxy/haproxy.cfg && service haproxy reload
-then
-    echo "======haproxy sucessfully reloaded========"
-else
-    echo "There's something wrong with your configuration" 1>&2
-    exit 1
-fi
+# restart haproxy
+service haproxy restart
