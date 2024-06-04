@@ -15,6 +15,7 @@ def number_of_subscribers(subreddit: str) -> int:
     Returns:
         int: number of subscribers to the given subreddit
     """
+
     if subreddit is not None and isinstance(subreddit, str):
         url = f"https://www.reddit.com/r/{subreddit}/about.json"
         user_agent = "Mozilla/5.0 (compatible; SubredditSubscriberCounter/1.0)"
@@ -22,6 +23,8 @@ def number_of_subscribers(subreddit: str) -> int:
 
         response = requests.get(url, headers=headers, allow_redirects=False)
         data = response.json()
-        if 'data' in data and 'subscribers' in data['data']:
+        try:
             return data['data']['subscribers']
+        except Exception as e:
+            return 0
     return 0
