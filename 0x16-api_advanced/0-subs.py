@@ -5,7 +5,7 @@ Gets the number of subscribers to a subreddit
 import requests
 
 
-def get_subreddit_subscribers(subreddit: str) -> int:
+def number_of_subscribers(subreddit: str) -> int:
     """Uses reddit api to get information about a subreddit
 
     Args:
@@ -18,10 +18,8 @@ def get_subreddit_subscribers(subreddit: str) -> int:
     user_agent = "Mozilla/5.0 (compatible; SubredditSubscriberCounter/1.0)"
     headers = {"User-Agent": user_agent}
 
-    response = requests.get(url, headers=headers)
-
+    response = requests.get(url, headers=headers, allow_redirects=False)
     data = response.json()
-    if 'subsribers' in data['data']:
+    if 'data' in data and 'subscribers' in data['data']:
         return data['data']['subscribers']
-    else:
-        return 0
+    return 0
