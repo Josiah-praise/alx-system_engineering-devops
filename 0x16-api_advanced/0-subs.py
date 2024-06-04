@@ -1,27 +1,30 @@
 #!/usr/bin/python3
-"""
-number of subscribers for a given subreddit
-"""
+'''
+Gets the number of subscribers to a subreddit
+'''
 
-from requests import get
+import requests
 
 
-def number_of_subscribers(subreddit):
+def number_of_subscribers(subreddit: str) -> int:
+    """Uses reddit api to get information about a subreddit
+
+    Args:
+        subreddit: name of subreddit
+
+    Returns:
+        int: number of subscribers to the given subreddit
     """
-    function that queries the Reddit API and returns the number of subscribers
-    (not active users, total subscribers) for a given subreddit.
-    """
 
-    if subreddit is None or not isinstance(subreddit, str):
-        return 0
+    if subreddit is not None and isinstance(subreddit, str):
+        url = f"https://reddit.com/r/{subreddit}/about.json"
+        user_agent = "Mozilla/5.0 (compatible; SubredditSubscriberCounter/1.0)"
+        headers = {"User-Agent": user_agent}
 
-    user_agent = {'User-agent': 'Google Chrome Version 81.0.4044.129'}
-    url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
-    response = get(url, headers=user_agent)
-    results = response.json()
-
-    try:
-        return results.get('data').get('subscribers')
-
-    except Exception:
-        return 0
+        response = requests.get(url, headers=headers, allow_redirects=False)
+        data = response.json()
+        try:
+            return data['data']['subscribers']
+        except Exception as e:
+            return 0
+    return 0
