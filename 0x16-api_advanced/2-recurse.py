@@ -15,7 +15,7 @@ def recurse(
 
     import requests
 
-    if not isinstance(subreddit, str):
+    if not isinstance(subreddit, str) or not isinstance(hot_list, list):
         return None
 
     if after is None:
