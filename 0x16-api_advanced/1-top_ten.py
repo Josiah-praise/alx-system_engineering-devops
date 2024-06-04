@@ -5,6 +5,9 @@ Fetches the top 10 hot posts of a subreddit
 
 
 def top_ten(subreddit: str) -> list:
+    '''
+    prints out the top 10 hot posts of a subreddit
+    '''
     import requests
 
     if subreddit is not None and isinstance(subreddit, str):
