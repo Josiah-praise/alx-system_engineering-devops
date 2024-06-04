@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 '''
 Gets the number of subscribers to a subreddit
 '''
@@ -14,12 +15,13 @@ def number_of_subscribers(subreddit: str) -> int:
     Returns:
         int: number of subscribers to the given subreddit
     """
-    url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    user_agent = "Mozilla/5.0 (compatible; SubredditSubscriberCounter/1.0)"
-    headers = {"User-Agent": user_agent}
+    if subreddit is not None and isinstance(subreddit, str):
+        url = f"https://www.reddit.com/r/{subreddit}/about.json"
+        user_agent = "Mozilla/5.0 (compatible; SubredditSubscriberCounter/1.0)"
+        headers = {"User-Agent": user_agent}
 
-    response = requests.get(url, headers=headers, allow_redirects=False)
-    data = response.json()
-    if 'data' in data and 'subscribers' in data['data']:
-        return data['data']['subscribers']
+        response = requests.get(url, headers=headers, allow_redirects=False)
+        data = response.json()
+        if 'data' in data and 'subscribers' in data['data']:
+            return data['data']['subscribers']
     return 0
