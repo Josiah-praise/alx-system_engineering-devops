@@ -36,4 +36,4 @@ def recurse(
                 hot_list.append(post['data']['title'])
             return recurse(subreddit, hot_list, after)
         except Exception as e:
-            raise e
+            return None
