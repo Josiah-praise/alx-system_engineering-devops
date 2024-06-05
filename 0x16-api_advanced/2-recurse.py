@@ -5,35 +5,27 @@ Gets the title of all hot articles of a subreddit
 import requests
 
 
-def recurse(
-    subreddit: str,
-    hot_list: list = [],
-    after: str | None = ''
-) -> list:
+def recurse(subreddit: str, hot_list: list = [], after: str = None) -> list:
     '''
     returns a list of all the titles of all hot posts of a subreddit
     '''
+    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
+    headers = {'User-Agent': 'Praise chromium engine'}
+    params = {'after': after} if after else {}
 
-    # TYPE CHECKING
-    if not isinstance(subreddit, str) or not isinstance(hot_list, list):
-        return None
-    # base condition
-    if after is None:
-        return hot_list
-    else:
-        url = f'https://www.reddit.com/r/{subreddit}/hot.json?after='
-        header = {'User-Agent': 'Praise chromium engine'}
-        response = requests.get(
-            url=url+after,
-            headers=header,
-            allow_redirects=False
-            )
+    response = requests.get(url,
+                            headers=headers,
+                            params=params,
+                            allow_redirects=False)
 
-        if response.status_code == 200:
-            response = response.json()
-            after = response['data']['after']
-
-            for post in response['data']['children']:
+    if response.status_code == 200:
+        data = response.json().get('data')
+        if data:
+            after = data.get('after')
+            for post in data.get('children', []):
                 hot_list.append(post['data']['title'])
-            return recurse(subreddit, hot_list, after)
-        return None
+            if after:
+                return recurse(subreddit, hot_list, after)
+            else:
+                return hot_list
+    return None
