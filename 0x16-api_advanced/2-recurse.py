@@ -27,7 +27,7 @@ def recurse(
             url=url+after,
             headers=header,
             allow_redirects=False
-        )
+            )
 
         if response.status_code == 200:
             response = response.json()
