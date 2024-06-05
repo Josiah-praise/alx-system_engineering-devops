@@ -21,10 +21,10 @@ def top_ten(subreddit: str) -> list:
             allow_redirects=False
             )
 
-        try:
+        if response.status_code == 200:
             posts = response.json()['data']['children']
 
             for post in posts[:10]:
                 print(post['data']['title'])
-        except Exception as e:
+        else:
             print(None)
