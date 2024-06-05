@@ -2,6 +2,7 @@
 '''
 Gets the title of all hot articles of a subreddit
 '''
+import requests
 
 
 def recurse(
@@ -12,8 +13,6 @@ def recurse(
     '''
     returns a list of all the titles of all hot posts of a subreddit
     '''
-
-    import requests
 
     # TYPE CHECKING
     if not isinstance(subreddit, str) or not isinstance(hot_list, list):
