@@ -15,9 +15,10 @@ def recurse(
 
     import requests
 
+    # TYPE CHECKING
     if not isinstance(subreddit, str) or not isinstance(hot_list, list):
         return None
-
+    # base condition
     if after is None:
         return hot_list
     else:
@@ -27,13 +28,13 @@ def recurse(
             url=url+after,
             headers=header,
             allow_redirects=False
-            ).json()
+            )
 
-        try:
+        if response.status_code == 200:
+            response = response.json()
             after = response['data']['after']
 
             for post in response['data']['children']:
                 hot_list.append(post['data']['title'])
             return recurse(subreddit, hot_list, after)
-        except Exception as e:
-            return None
+        return None
