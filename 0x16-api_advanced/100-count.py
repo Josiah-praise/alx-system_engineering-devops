@@ -1,90 +1,54 @@
 #!/usr/bin/python3
-'''
+""" raddit api"""
 
-'''
-
+import json
 import requests
-from typing import Any
 
 
-def do_keyword_count(word_to_count: dict[str, int], title: str) -> None:
-    '''
-    counts the occurences of the keys from word_to_dict in title
-    and updates word_to_dict accordingly
-    '''
-    list_of_words = [word.lower() for word in title.split()]
-    for each in list_of_words:
-        if each in word_to_count:
-            word_to_count[each] += 1
+def count_words(subreddit, word_list, after="", count=[]):
+    """count all words"""
 
+    if after == "":
+        count = [0] * len(word_list)
 
-def getWordCount(posts: list[dict[Any, Any]],
-                 word_to_count: dict[str, int]) -> None:
-    '''
-    calculates the word count for a given post
-    '''
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    request = requests.get(url,
+                           params={'after': after},
+                           allow_redirects=False,
+                           headers={'user-agent': 'bhalut'})
 
-    for post in posts:
-        do_keyword_count(word_to_count, post['data']['title'])
+    if request.status_code == 200:
+        data = request.json()
 
+        for topic in (data['data']['children']):
+            for word in topic['data']['title'].split():
+                for i in range(len(word_list)):
+                    if word_list[i].lower() == word.lower():
+                        count[i] += 1
 
-def printWordCount(count: int, wordCount: dict[str, int]) -> None:
-    '''
-    prints out result as <word> <count>
-    results are printed in descending order, by the count,
-    and if the count is the same for separate keywords,
-    they are sorted alphabetically (ascending, from A to Z).
-    Words with no matches are skipped and not printed.
-    Words are printed in lowercase.
-    '''
-    if count == 0:
-        # Filter out words with no matches
-        filtered_word_count = {word: cnt for word,
-                               cnt in wordCount.items() if cnt > 0}
+        after = data['data']['after']
+        if after is None:
+            save = []
+            for i in range(len(word_list)):
+                for j in range(i + 1, len(word_list)):
+                    if word_list[i].lower() == word_list[j].lower():
+                        save.append(j)
+                        count[i] += count[j]
 
-        # Sort the dictionary by values in descending order
-        # and by keys in ascending order if values are the same
-        sorted_word_count = sorted(
-            filtered_word_count.items(), key=lambda item: (-item[1], item[0]))
+            for i in range(len(word_list)):
+                for j in range(i, len(word_list)):
+                    if (count[j] > count[i] or
+                            (word_list[i] > word_list[j] and
+                             count[j] == count[i])):
+                        aux = count[i]
+                        count[i] = count[j]
+                        count[j] = aux
+                        aux = word_list[i]
+                        word_list[i] = word_list[j]
+                        word_list[j] = aux
 
-        # Print the sorted words with their counts
-        for word, cnt in sorted_word_count:
-            print(f"{word} {cnt}")
-
-
-def count_words(subreddit: str,
-                word_list: list[str],
-                after: str | None = None,
-                count: int = 0) -> dict[str, int]:
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
-    params = {"after": after} if after else {}
-    header = {"User-Agent": "Praise Chromium Engine Lol"}
-
-    # default dict of keyword list
-    wordCount: dict[str, int] = {key.lower(): 0 for key in word_list}
-
-    response = requests.get(url=url, params=params,
-                            headers=header, allow_redirects=False)
-
-    # check for successful json response
-    if response.status_code == 200:
-        after = response.json().get('data').get('after')
-        posts: list[dict[Any, Any]] = response.json().get(
-            'data').get('children')
-        getWordCount(posts, wordCount)
-
-        otherPagesWordCount = None
-
-        # check if there's a next page
-        if after:
-            otherPagesWordCount = count_words(
-                subreddit, word_list, after, count=count + 1)
+            for i in range(len(word_list)):
+                if (count[i] > 0) and i not in save:
+                    print("{}: {}".format(word_list[i].lower(), count[i]))
         else:
-            return wordCount
-
-        if otherPagesWordCount:
-            for key, value in otherPagesWordCount.items():
-                wordCount[key] += value
-        printWordCount(count, wordCount)
-        return wordCount
-    return {}
+            count_words(subreddit, word_list, after, count)
